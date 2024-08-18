@@ -32,16 +32,16 @@ public class Road {
             String data = a.substring(index);
             Material mat = Material.matchMaterial(material);
 
-            if(mat == null) {
+            if (mat == null) {
                 mat = Material.matchMaterial(material, true);
 
-                if(mat != null) {
+                if (mat != null) {
                     log.warning("Found legacy material in road. You should update it to the new name to avoid any potential issues.");
                     log.warning(String.format("Input string: %s -> %s", material, mat.name()));
                 }
             }
 
-            if(mat == null) {
+            if (mat == null) {
                 log.severe("Invalid road block defined, skipping. Make sure to specify a valid material!");
                 log.severe(String.format("Input string: %s", a));
                 return;
@@ -68,5 +68,18 @@ public class Road {
 
     public double getSpeedMod() {
         return speed;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Road: ");
+        sb.append("Speed=");
+        sb.append(speed);
+        sb.append("BlockData=");
+        for (BlockData blockData : blockData) {
+            sb.append(blockData.getAsString());
+        }
+        return sb.toString();
     }
 }

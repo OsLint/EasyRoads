@@ -13,11 +13,12 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.attribute.AttributeModifier.Operation;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class EasyRoadsTask extends BukkitRunnable {
     private static final int UPDATE_ON_ROAD_DIVIDER = 20;
-    private static final int UPDATE_ENTITIY_CACHE = 100;
+    private static final int UPDATE_ENTITY_CACHE = 100;
     private static final UUID MODIFIER_UUID = UUID.fromString("0d2d4303-c228-4075-9f94-00fa3036f40c");
     private static final String MODIFIER_NAME = "SpeedRoads";
     private static final AttributeModifier EMPTY_MODIFIER = new AttributeModifier(MODIFIER_UUID, MODIFIER_NAME, 0, Operation.ADD_SCALAR);
@@ -38,13 +39,16 @@ public class EasyRoadsTask extends BukkitRunnable {
         Bukkit.getOnlinePlayers().forEach(this::applyAttribute);
         affectedEntitiesMap.forEach((w, a) -> a.forEach(this::applyAttribute));
 
-        if(tickCounter++ % UPDATE_ENTITIY_CACHE == 0 && !plugin.getAffectedEntities().isEmpty())
+        if (tickCounter++ % UPDATE_ENTITY_CACHE == 0 && !plugin.getAffectedEntities().isEmpty())
             Bukkit.getWorlds().forEach(a -> affectedEntitiesMap.put(a, a.getEntitiesByClasses(plugin.getAffectedEntities().toArray(new Class[0]))));
     }
 
     private void applyAttribute(Entity a) {
-        if (a.isValid() && a instanceof LivingEntity)
+        if (a.isValid() && a instanceof LivingEntity) {
             applyAttribute((LivingEntity) a);
+            plugin.getLogger().info("Applied attribute to " + a.getName());
+        }
+
     }
 
     private void applyAttribute(LivingEntity a) {
@@ -52,7 +56,7 @@ public class EasyRoadsTask extends BukkitRunnable {
         double targetSpeedMod = getTargetSpeed(a);
 
         // no need to update attribute if we're at the target already
-        if(currentSpeedMod == targetSpeedMod)
+        if (currentSpeedMod == targetSpeedMod)
             return;
 
         AttributeInstance attrib = a.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED);
@@ -70,7 +74,7 @@ public class EasyRoadsTask extends BukkitRunnable {
 
     private double getTargetSpeed(LivingEntity a) {
         // distribute updated entities roughly evenly across the ticks
-        if(tickCounter % UPDATE_ON_ROAD_DIVIDER == a.getEntityId() % UPDATE_ON_ROAD_DIVIDER) {
+        if (tickCounter % UPDATE_ON_ROAD_DIVIDER == a.getEntityId() % UPDATE_ON_ROAD_DIVIDER) {
             double targetSpeedMod = Double.NEGATIVE_INFINITY;
             for (Road r : plugin.getRoads())
                 if (r.getSpeedMod() > targetSpeedMod && r.isRoadBlock(a.getLocation().getBlock()))

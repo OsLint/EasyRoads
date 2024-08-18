@@ -1,23 +1,31 @@
+# This is the main configuration file for the plugin
+# You can add more roads by adding more road names
+# and blocks to the list of blocks for each road
+
+# display debug messages
+debug: true
 # maximum acceleration per tick
 stepSize: 0.01
-#message:
-#  noPermission: '&cYou do not have permission to use this command.'
-#  noRoads: '&cThere are no roads available.'
-# roadList: '&aRoads: &f{roads}'
-#  help: '&aAvailable commands: &f{commands}'
+
 # Affected non-player living entities, may affect performance negatively
 # See https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html
 affectedEntities: [ ]
 roads:
   road1:
-    speed: 0.5
+    speed: 3
     blocks:
       - ANY
       - GRAVEL
       - COBBLESTONE
       - COBBLESTONE
   road2:
-    speed: 0.2
+    speed: 7
     blocks:
-      - GRASS_PATH
-
+      - DIRT_PATH
+  road3:
+    speed: 15
+    blocks:
+      - Any
+      - OBSIDIAN
+      - COBBLESTONE
+      - COBBLESTONE
