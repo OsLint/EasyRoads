@@ -11,8 +11,8 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class Road {
-    private double speed;
-    private List<BlockData> blockData = new ArrayList<>();
+    private final double speed;
+    private final List<BlockData> blockData = new ArrayList<>();
 
     public Road(ConfigurationSection config, Logger log) {
         this.speed = config.getDouble("speed", 0.2D);

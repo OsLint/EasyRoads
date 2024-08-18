@@ -23,10 +23,10 @@ public class EasyRoadsTask extends BukkitRunnable {
     private static final AttributeModifier EMPTY_MODIFIER = new AttributeModifier(MODIFIER_UUID, MODIFIER_NAME, 0, Operation.ADD_SCALAR);
     private final EasyRoads plugin;
 
-    private Map<UUID, Double> currentSpeedMap = new HashMap<>();
-    private Map<UUID, Double> targetSpeedMap = new HashMap<>();
+    private final Map<UUID, Double> currentSpeedMap = new HashMap<>();
+    private final Map<UUID, Double> targetSpeedMap = new HashMap<>();
 
-    private Map<World, Collection<Entity>> affectedEntitiesMap = new HashMap<>();
+    private final Map<World, Collection<Entity>> affectedEntitiesMap = new HashMap<>();
     private long tickCounter = 0;
 
     public EasyRoadsTask(EasyRoads plugin) {

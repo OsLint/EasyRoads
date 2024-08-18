@@ -27,7 +27,7 @@ public final class EasyRoads extends JavaPlugin {
         loadConfig();
 
         //register commands
-        Objects.requireNonNull(getCommand("roads")).setExecutor(new EasyRoadsCommand(this));
+       // Objects.requireNonNull(getCommand("roads")).setExecutor(new EasyRoadsCommand(this));
 
 
         //start task
