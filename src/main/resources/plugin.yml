@@ -1,0 +1,6 @@
+name: EasyRoads
+version: '${project.version}'
+main: me.tepeshini.easyroads.EasyRoads
+api-version: '1.21'
+authors: [Tepeshini(ok.dev)]
+description: Allows players to create predefined roads that will allow them to travel faster 
