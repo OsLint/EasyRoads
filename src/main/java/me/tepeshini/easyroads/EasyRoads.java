@@ -21,6 +21,7 @@ public final class EasyRoads extends JavaPlugin {
     private Set<Road> roads;
     private double speedIncreaseRate = 0.01D;
     private double speedDecayRate = 1D;
+    private String displayedMessage = "You are on a road!";
     private final Set<Class<? extends LivingEntity>> affectedEntities = new HashSet<>();
 
     @Override
@@ -56,6 +57,8 @@ public final class EasyRoads extends JavaPlugin {
     public void loadConfig() {
         affectedEntities.clear();
         speedIncreaseRate = getConfig().getDouble("speedIncreaseRate", 0.01D);
+        speedDecayRate = getConfig().getDouble("speedDecayRate", 1D);
+        displayedMessage = getConfig().getString("displayedMessage", "You are on a road!");
 
         //load affected entities
         for (String s : getConfig().getStringList("affectedEntities")) {
@@ -100,6 +103,10 @@ public final class EasyRoads extends JavaPlugin {
 
     public double getSpeedDecayRate() {
         return speedDecayRate;
+    }
+
+    public String getDisplayedMessage() {
+        return displayedMessage;
     }
 
     public Set<Class<? extends LivingEntity>> getAffectedEntities() {

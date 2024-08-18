@@ -10,25 +10,29 @@ speedIncreaseRate: 0.1
 # maximum deceleration per tick
 speedDecayRate: 1
 
+# action bar message to display when player is on a road
+infoMessage: "You are on a road"
+
 # Affected non-player living entities, may affect performance negatively
 # See https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html
 affectedEntities: [ ]
 roads:
   road1:
+    speed: 0.5
+    blocks:
+      - DIRT_PATH
+  road2:
     speed: 3
     blocks:
       - ANY
       - GRAVEL
       - COBBLESTONE
       - COBBLESTONE
-  road2:
-    speed: 0.5
-    blocks:
-      - DIRT_PATH
   road3:
     speed: 5
     blocks:
       - Any
-      - OBSIDIAN
+      - STONE_BRICKS
+      - GRAVEL
       - COBBLESTONE
       - COBBLESTONE

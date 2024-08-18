@@ -33,8 +33,9 @@ public class EasyRoadsTask extends BukkitRunnable {
     private static final int UPDATE_ON_ROAD_DIVIDER = 20;
     private static final int UPDATE_ENTITY_CACHE = 100;
     private static final UUID MODIFIER_UUID = UUID.fromString("0d2d4303-c228-4075-9f94-00fa3036f40c");
-    private static final String MODIFIER_NAME = "SpeedRoads";
-    private static final AttributeModifier EMPTY_MODIFIER = new AttributeModifier(MODIFIER_UUID, MODIFIER_NAME, 0, Operation.ADD_SCALAR);
+    private static final String MODIFIER_NAME = "EasyRoads";
+    private static final AttributeModifier EMPTY_MODIFIER = new AttributeModifier(
+            MODIFIER_UUID, MODIFIER_NAME, 0, Operation.ADD_SCALAR);
     private final EasyRoads plugin;
 
     private final Map<UUID, Double> currentSpeedMap = new HashMap<>();
@@ -62,7 +63,8 @@ public class EasyRoadsTask extends BukkitRunnable {
         Bukkit.getOnlinePlayers().forEach(this::applyAttribute);
         affectedEntitiesMap.forEach((w, a) -> a.forEach(this::applyAttribute));
         if (tickCounter++ % UPDATE_ENTITY_CACHE == 0 && !plugin.getAffectedEntities().isEmpty()) {
-            Bukkit.getWorlds().forEach(a -> affectedEntitiesMap.put(a, a.getEntitiesByClasses(plugin.getAffectedEntities().toArray(new Class[0]))));
+            Bukkit.getWorlds().forEach(a -> affectedEntitiesMap.put(a, a.getEntitiesByClasses(
+                    plugin.getAffectedEntities().toArray(new Class[0]))));
         }
     }
 
@@ -92,19 +94,14 @@ public class EasyRoadsTask extends BukkitRunnable {
         if (currentSpeedMod == targetSpeedMod)
             return;
 
-        if (!(currentSpeedMod == 0)) {
-            debugLog().info("Current speed mod: " + currentSpeedMod);
-            debugLog().info("Target speed mod: " + targetSpeedMod);
-
-        }
-
         AttributeInstance attrib = a.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED);
         attrib.removeModifier(EMPTY_MODIFIER);
 
-        if (targetSpeedMod >= currentSpeedMod)
+        if (targetSpeedMod >= currentSpeedMod) {
             currentSpeedMod = Math.min(currentSpeedMod + plugin.getSpeedIncreaseRate(), targetSpeedMod);
-        else
-            currentSpeedMod = Math.max(currentSpeedMod - plugin.getSpeedIncreaseRate(), 0);
+        } else {
+            currentSpeedMod = Math.max(currentSpeedMod - plugin.getSpeedDecayRate(), 0);
+        }
 
         attrib.addModifier(new AttributeModifier(MODIFIER_UUID, MODIFIER_NAME, currentSpeedMod, Operation.ADD_SCALAR));
 
@@ -122,30 +119,25 @@ public class EasyRoadsTask extends BukkitRunnable {
         // distribute updated entities roughly evenly across the ticks
         if (tickCounter % UPDATE_ON_ROAD_DIVIDER == a.getEntityId() % UPDATE_ON_ROAD_DIVIDER) {
             double targetSpeedMod = Double.NEGATIVE_INFINITY;
-            boolean onRoad = false;
 
             for (Road r : plugin.getRoads())
                 if (r.getSpeedMod() > targetSpeedMod && r.isRoadBlock(a.getLocation().getBlock())) {
                     targetSpeedMod = r.getSpeedMod();
-                    onRoad = true;
+
 
                     if (a instanceof Player p) {
                         debugLog().info("Player is on road with speed mod: " + targetSpeedMod);
+                        debugLog().info("Target speed mod: " + targetSpeedMod);
+                        debugLog().info(
+                                "Current speed mod: " + currentSpeedMap.getOrDefault(a.getUniqueId(), 0D));
                         //display message on action bar
-                        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§aYou are on a road with speed mod: "
-                                + targetSpeedMod));
+                        p.spigot().sendMessage(
+                                ChatMessageType.ACTION_BAR, new TextComponent("§a" + plugin.getDisplayedMessage()));
                     }
                 }
 
             if (targetSpeedMod == Double.NEGATIVE_INFINITY) {
                 targetSpeedMod = 0.0;
-            }
-
-            // If the player is off the road, apply the speed decay rate
-            if (!onRoad) {
-                double offRoadSpeedDecay = plugin.getSpeedDecayRate();
-                double currentSpeedMod = currentSpeedMap.getOrDefault(a.getUniqueId(), 0D);
-                targetSpeedMod = Math.max(0.0, currentSpeedMod - offRoadSpeedDecay);
             }
 
             targetSpeedMap.put(a.getUniqueId(), targetSpeedMod);
