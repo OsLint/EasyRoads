@@ -19,7 +19,8 @@ import static me.tepeshini.easyroads.utils.DebugLogger.debugLog;
 public final class EasyRoads extends JavaPlugin {
 
     private Set<Road> roads;
-    private double stepSize = 0.01D;
+    private double speedIncreaseRate = 0.01D;
+    private double speedDecayRate = 1D;
     private final Set<Class<? extends LivingEntity>> affectedEntities = new HashSet<>();
 
     @Override
@@ -54,7 +55,7 @@ public final class EasyRoads extends JavaPlugin {
 
     public void loadConfig() {
         affectedEntities.clear();
-        stepSize = getConfig().getDouble("stepSize", 0.01D);
+        speedIncreaseRate = getConfig().getDouble("speedIncreaseRate", 0.01D);
 
         //load affected entities
         for (String s : getConfig().getStringList("affectedEntities")) {
@@ -76,19 +77,29 @@ public final class EasyRoads extends JavaPlugin {
         roads = roadSection.getKeys(false).stream().map(key -> new Road(Objects.requireNonNull(
                 roadSection.getConfigurationSection(key)))).collect(Collectors.toSet());
 
-        for (Road r : roads) {
-           getLogger().info("Loaded: " + r);
-        }
 
-        getLogger().info(() -> roads.size() + " Road(s) loaded");
+        getLogger().info("--------------------");
+        getLogger().info("Loaded roads:");
+        getLogger().info("--------------------");
+        int i = 1;
+        for (Road r : roads) {
+            getLogger().info(i + ") " + r);
+            i++;
+        }
+        getLogger().info("--------------------");
+
     }
 
     public Set<Road> getRoads() {
         return roads;
     }
 
-    public double getStepSize() {
-        return stepSize;
+    public double getSpeedIncreaseRate() {
+        return speedIncreaseRate;
+    }
+
+    public double getSpeedDecayRate() {
+        return speedDecayRate;
     }
 
     public Set<Class<? extends LivingEntity>> getAffectedEntities() {

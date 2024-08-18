@@ -2,7 +2,7 @@ package me.tepeshini.easyroads.models;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -14,10 +14,13 @@ import static me.tepeshini.easyroads.utils.DebugLogger.debugLog;
 
 public class Road {
     private final double speed;
+
+
     private final List<BlockData> blockData = new ArrayList<>();
 
     public Road(ConfigurationSection config) {
         this.speed = config.getDouble("speed", 0.2D);
+
 
         config.getStringList("blocks").forEach(a -> {
             if (a.equalsIgnoreCase("EMPTY") || a.equalsIgnoreCase("NULL") || a.equalsIgnoreCase("ANY")) {
@@ -78,8 +81,11 @@ public class Road {
         sb.append("Road: ");
         sb.append("Speed=");
         sb.append(speed);
-        sb.append("BlockData=");
+        sb.append(" BlockData=");
         for (BlockData blockData : blockData) {
+            if (blockData == null) {
+                continue;
+            }
             sb.append(blockData.getAsString());
         }
         return sb.toString();

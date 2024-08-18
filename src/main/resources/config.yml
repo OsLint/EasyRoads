@@ -4,8 +4,11 @@
 
 # display debug messages
 debug: true
+
 # maximum acceleration per tick
-stepSize: 0.01
+speedIncreaseRate: 0.1
+# maximum deceleration per tick
+speedDecayRate: 1
 
 # Affected non-player living entities, may affect performance negatively
 # See https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html
@@ -19,11 +22,11 @@ roads:
       - COBBLESTONE
       - COBBLESTONE
   road2:
-    speed: 7
+    speed: 0.5
     blocks:
       - DIRT_PATH
   road3:
-    speed: 15
+    speed: 5
     blocks:
       - Any
       - OBSIDIAN
