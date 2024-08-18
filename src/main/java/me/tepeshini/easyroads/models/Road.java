@@ -1,4 +1,4 @@
-package me.tepeshini.easyroads;
+package me.tepeshini.easyroads.models;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,11 +10,13 @@ import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
 
+import static me.tepeshini.easyroads.utils.DebugLogger.debugLog;
+
 public class Road {
     private final double speed;
     private final List<BlockData> blockData = new ArrayList<>();
 
-    public Road(ConfigurationSection config, Logger log) {
+    public Road(ConfigurationSection config) {
         this.speed = config.getDouble("speed", 0.2D);
 
         config.getStringList("blocks").forEach(a -> {
@@ -36,14 +38,14 @@ public class Road {
                 mat = Material.matchMaterial(material, true);
 
                 if (mat != null) {
-                    log.warning("Found legacy material in road. You should update it to the new name to avoid any potential issues.");
-                    log.warning(String.format("Input string: %s -> %s", material, mat.name()));
+                    debugLog().warning("Found legacy material in road. You should update it to the new name to avoid any potential issues.");
+                    debugLog().warning(String.format("Input string: %s -> %s", material, mat.name()));
                 }
             }
 
             if (mat == null) {
-                log.severe("Invalid road block defined, skipping. Make sure to specify a valid material!");
-                log.severe(String.format("Input string: %s", a));
+                debugLog().severe("Invalid road block defined, skipping. Make sure to specify a valid material!");
+                debugLog().severe(String.format("Input string: %s", a));
                 return;
             }
 

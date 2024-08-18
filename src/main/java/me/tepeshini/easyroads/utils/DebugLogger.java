@@ -10,6 +10,7 @@ public class DebugLogger {
 
     private DebugLogger(EasyRoads plugin, Boolean debug) {
         this.plugin = plugin;
+        this.debug = debug;
     }
 
     public static void init(EasyRoads plugin, Boolean debug) {
@@ -19,7 +20,6 @@ public class DebugLogger {
     }
 
     /**
-     *
      * @return instance of the debug logger
      */
     public static DebugLogger debugLog() {
@@ -41,9 +41,7 @@ public class DebugLogger {
     }
 
     public void severe(String message) {
-        if (debug) {
-            plugin.getLogger().severe(message);
-        }
+        plugin.getLogger().severe(message);
     }
 
 }

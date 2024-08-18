@@ -5,12 +5,16 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import me.tepeshini.easyroads.models.Road;
+import me.tepeshini.easyroads.tasks.EasyRoadsTask;
 import me.tepeshini.easyroads.utils.DebugLogger;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import static me.tepeshini.easyroads.utils.DebugLogger.debugLog;
 
 public final class EasyRoads extends JavaPlugin {
 
@@ -31,8 +35,8 @@ public final class EasyRoads extends JavaPlugin {
 
         //init logger
         Boolean debug = getConfig().getBoolean("debug", false);
-        DebugLogger.init(this,debug);
-        DebugLogger.debugLog().warning("Debug mode enabled");
+        DebugLogger.init(this, debug);
+        debugLog().warning("Debug mode enabled");
 
         //start task
         new EasyRoadsTask(this).runTaskTimer(this, 1L, 1L);
@@ -70,10 +74,13 @@ public final class EasyRoads extends JavaPlugin {
         ConfigurationSection roadSection = getConfig().getConfigurationSection("roads");
         assert roadSection != null;
         roads = roadSection.getKeys(false).stream().map(key -> new Road(Objects.requireNonNull(
-                roadSection.getConfigurationSection(key)), getLogger())).collect(Collectors.toSet());
+                roadSection.getConfigurationSection(key)))).collect(Collectors.toSet());
+
+        for (Road r : roads) {
+           getLogger().info("Loaded: " + r);
+        }
 
         getLogger().info(() -> roads.size() + " Road(s) loaded");
-
     }
 
     public Set<Road> getRoads() {

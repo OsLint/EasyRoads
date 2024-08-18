@@ -1,10 +1,12 @@
-package me.tepeshini.easyroads;
+package me.tepeshini.easyroads.tasks;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import me.tepeshini.easyroads.EasyRoads;
+import me.tepeshini.easyroads.models.Road;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
@@ -13,8 +15,9 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.attribute.AttributeModifier.Operation;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import static me.tepeshini.easyroads.utils.DebugLogger.debugLog;
 
 public class EasyRoadsTask extends BukkitRunnable {
     private static final int UPDATE_ON_ROAD_DIVIDER = 20;
@@ -39,21 +42,25 @@ public class EasyRoadsTask extends BukkitRunnable {
         Bukkit.getOnlinePlayers().forEach(this::applyAttribute);
         affectedEntitiesMap.forEach((w, a) -> a.forEach(this::applyAttribute));
 
-        if (tickCounter++ % UPDATE_ENTITY_CACHE == 0 && !plugin.getAffectedEntities().isEmpty())
+        if (tickCounter++ % UPDATE_ENTITY_CACHE == 0 && !plugin.getAffectedEntities().isEmpty()) {
             Bukkit.getWorlds().forEach(a -> affectedEntitiesMap.put(a, a.getEntitiesByClasses(plugin.getAffectedEntities().toArray(new Class[0]))));
+        }
+        debugLog().warning("Tick: " + tickCounter);
     }
 
     private void applyAttribute(Entity a) {
+        debugLog().info("Trying to apply attribute to entity: " + a.getUniqueId());
         if (a.isValid() && a instanceof LivingEntity) {
+            debugLog().info("Entity is valid and living");
             applyAttribute((LivingEntity) a);
-            plugin.getLogger().info("Applied attribute to " + a.getName());
         }
-
     }
 
     private void applyAttribute(LivingEntity a) {
         double currentSpeedMod = currentSpeedMap.getOrDefault(a.getUniqueId(), 0D);
+        debugLog().info("Current speed mod: " + currentSpeedMod);
         double targetSpeedMod = getTargetSpeed(a);
+        debugLog().info("Target speed mod: " + targetSpeedMod);
 
         // no need to update attribute if we're at the target already
         if (currentSpeedMod == targetSpeedMod)
