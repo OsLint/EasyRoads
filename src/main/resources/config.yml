@@ -1,0 +1,23 @@
+# maximum acceleration per tick
+stepSize: 0.01
+#message:
+#  noPermission: '&cYou do not have permission to use this command.'
+#  noRoads: '&cThere are no roads available.'
+# roadList: '&aRoads: &f{roads}'
+#  help: '&aAvailable commands: &f{commands}'
+# Affected non-player living entities, may affect performance negatively
+# See https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html
+affectedEntities: [ ]
+roads:
+  road1:
+    speed: 0.5
+    blocks:
+      - ANY
+      - GRAVEL
+      - COBBLESTONE
+      - COBBLESTONE
+  road2:
+    speed: 0.2
+    blocks:
+      - GRASS_PATH
+
