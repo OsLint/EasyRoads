@@ -30,7 +30,7 @@ permissions:
         default: op
     easyroads.list:
         description: Permission to list all roads Blocksets
-        default: true
+        default: op
     easyroads.help:
         description: Permission to show help
         default: op

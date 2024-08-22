@@ -129,13 +129,8 @@ public class EasyRoadsTask extends BukkitRunnable {
 
 
                     if (a instanceof Player p) {
-                        log.info("Player is on road with speed mod: " + targetSpeedMod);
-                        log.info("Target speed mod: " + targetSpeedMod);
-                        log.info(
-                                "Current speed mod: " + currentSpeedMap.getOrDefault(a.getUniqueId(), 0D));
-                        //display message on action bar
                         p.spigot().sendMessage(
-                                ChatMessageType.ACTION_BAR, new TextComponent("§a" + plugin.getDisplayedMessage()));
+                                ChatMessageType.ACTION_BAR, new TextComponent(plugin.getOnRoadMessage()));
                     }
                 }
 

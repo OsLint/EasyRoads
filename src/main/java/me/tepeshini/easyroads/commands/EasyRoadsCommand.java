@@ -24,17 +24,17 @@ public class EasyRoadsCommand implements CommandExecutor {
 
         // Check if no arguments or 'help' is requested
         if (args.length == 0 || args[0].equalsIgnoreCase("help")) {
-            player.sendMessage("EasyRoads commands:");
+            player.sendMessage(plugin.getHelpHeaderMessage());
             //check for permissions
-            if (player.hasPermission("easyroads.reload")){
-                player.sendMessage("/easyroads reload - Reload the EasyRoads configuration.");
+            if (player.hasPermission("easyroads.reload")) {
+                player.sendMessage(plugin.getHelpReloadMessage());
             }
 
-            if (player.hasPermission("easyroads.list")){
-                player.sendMessage("/easyroads list - List all roads.");
+            if (player.hasPermission("easyroads.list")) {
+                player.sendMessage(plugin.getHelpListMessage());
             }
 
-            player.sendMessage("/easyroads help - Display this help message.");
+            player.sendMessage(plugin.getHelpHelpMessage());
 
             return true;
         }
@@ -42,12 +42,12 @@ public class EasyRoadsCommand implements CommandExecutor {
         // Handle the 'reload' command
         if (args[0].equalsIgnoreCase("reload")) {
             if (!player.hasPermission("easyroads.reload")) {
-                player.sendMessage("You do not have permission to use this command.");
+                player.sendMessage(plugin.getNoPermissionMessage());
                 return true;
             }
             plugin.reloadConfig();
             plugin.loadConfig();
-            player.sendMessage("EasyRoads configuration reloaded.");
+            player.sendMessage(plugin.getReloadSuccessMessage());
             return true;
         }
 
@@ -55,16 +55,16 @@ public class EasyRoadsCommand implements CommandExecutor {
         // Handle the 'list' command
         if (args[0].equalsIgnoreCase("list")) {
             if (!player.hasPermission("easyroads.list")) {
-                player.sendMessage("You do not have permission to use this command.");
+                player.sendMessage(plugin.getNoPermissionMessage());
                 return true;
             }
-            player.sendMessage("Roads:");
+            player.sendMessage(plugin.getListHeaderMessage());
             plugin.getRoads().forEach(road -> player.sendMessage(road.toString()));
             return true;
         }
 
-        // If command not recognized, show help
-        player.sendMessage("Invalid subcommand. Use /easyroads help for available commands.");
+        // If command not recognized, show invalid command message
+        player.sendMessage(plugin.getInvalidCommandMessage());
         return true;
     }
 }

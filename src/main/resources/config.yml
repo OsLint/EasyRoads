@@ -2,20 +2,29 @@
 # You can add more roads by adding more road names
 # and blocks to the list of blocks for each road
 
-# display debug messages
-debug: true
-
 # maximum acceleration per tick
 speedIncreaseRate: 0.1
 # maximum deceleration per tick
 speedDecayRate: 1
 
-# action bar message to display when player is on a road
-infoMessage: "You are on a road"
+# Customizable messages (you can use color codes)
+messages:
+  onRoad: "&cYou are on a road!"
+  noPermission: "&4You do not have permission to use this command."
+  reloadSuccess: "&aConfiguration reloaded successfully."
+  listHeader: "&6Roads:"
+  help:
+    header: "&bEasyRoads commands:"
+    reload: "&7/easyroads reload - Reload the EasyRoads configuration."
+    list: "&7/easyroads list - List all roads."
+    help: "&7/easyroads help - Display this help message."
+  invalidCommand: "&cInvalid subcommand. Use /easyroads help for available commands."
 
 # Affected non-player living entities, may affect performance negatively
 # See https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html
 affectedEntities: [ ]
+
+# Road definitions
 roads:
   road1:
     speed: 0.5
