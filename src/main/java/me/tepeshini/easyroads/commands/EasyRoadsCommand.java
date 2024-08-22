@@ -6,14 +6,31 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+/**
+ * Handles the commands for the EasyRoads plugin.
+ * This class implements {@link CommandExecutor} and processes player commands related to EasyRoads.
+ */
 public class EasyRoadsCommand implements CommandExecutor {
 
     private final EasyRoads plugin;
 
+    /**
+     * Constructs an instance of EasyRoadsCommand with the given plugin.
+     *
+     * @param plugin the EasyRoads plugin instance
+     */
     public EasyRoadsCommand(EasyRoads plugin) {
         this.plugin = plugin;
     }
-
+    /**
+     * Executes the command sent by the player.
+     *
+     * @param sender      the sender of the command
+     * @param cmd         the command that was executed
+     * @param commandLabel the alias used to execute the command
+     * @param args        the arguments passed to the command
+     * @return true if the command was handled successfully, false otherwise
+     */
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 

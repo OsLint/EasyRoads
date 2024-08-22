@@ -9,15 +9,26 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
+
 import java.util.logging.Logger;
 
+/**
+ * Represents a road in the EasyRoads plugin.
+ * A road is defined by its speed modifier and the blocks that make up the road.
+ */
 public class Road {
     private final double speed;
 
 
     private final List<BlockData> blockData = new ArrayList<>();
 
-    public Road(ConfigurationSection config,Logger log) {
+    /**
+     * Constructs a Road instance using the given configuration section.
+     *
+     * @param config the configuration section containing road data
+     * @param log    the logger to log warnings and errors
+     */
+    public Road(ConfigurationSection config, Logger log) {
         this.speed = config.getDouble("speed", 0.2D);
 
 
@@ -40,8 +51,8 @@ public class Road {
                 mat = Material.matchMaterial(material, true);
 
                 if (mat != null) {
-                  log.warning("Found legacy material in road. You should update it to the new name to avoid any potential issues.");
-                  log.warning(String.format("Input string: %s -> %s", material, mat.name()));
+                    log.warning("Found legacy material in road. You should update it to the new name to avoid any potential issues.");
+                    log.warning(String.format("Input string: %s -> %s", material, mat.name()));
                 }
             }
 
@@ -55,6 +66,12 @@ public class Road {
         });
     }
 
+    /**
+     * Checks if the given block matches the road's block data.
+     *
+     * @param block the block to check
+     * @return true if the block matches the road's block data, false otherwise
+     */
     public boolean isRoadBlock(Block block) {
         if (blockData.isEmpty())
             return false;
@@ -70,7 +87,12 @@ public class Road {
         return true;
     }
 
-    public double getSpeedMod() {
+    /**
+     * Gets the speed modifier for this road.
+     *
+     * @return the speed modifier
+     */
+    public double getSpeedModifier() {
         return speed;
     }
 

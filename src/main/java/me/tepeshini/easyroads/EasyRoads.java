@@ -1,7 +1,6 @@
 package me.tepeshini.easyroads;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -15,7 +14,11 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.plugin.java.JavaPlugin;
 
-
+/**
+ * The main class for the EasyRoads plugin.
+ * This class handles the plugin's initialization, configuration loading,
+ * and command registration.
+ */
 public final class EasyRoads extends JavaPlugin {
 
     private Set<Road> roads;
@@ -32,6 +35,10 @@ public final class EasyRoads extends JavaPlugin {
     private String invalidCommandMessage;
     private final Set<Class<? extends LivingEntity>> affectedEntities = new HashSet<>();
 
+    /**
+     * Called when the plugin is enabled. This method sets up the plugin,
+     * including loading the configuration and registering commands.
+     */
     @Override
     public void onEnable() {
         //create and load config
@@ -49,13 +56,19 @@ public final class EasyRoads extends JavaPlugin {
         getLogger().info("EasyRoads enabled");
     }
 
+    /**
+     * Called when the plugin is disabled. This method cancels all scheduled tasks.
+     */
     @Override
     public void onDisable() {
         getServer().getScheduler().cancelTasks(this);
         getLogger().warning("EasyRoads disabled");
     }
 
-
+    /**
+     * Loads the plugin configuration.
+     * This method initializes the configuration settings, including messages and road definitions.
+     */
     public void loadConfig() {
         affectedEntities.clear();
         speedIncreaseRate = getConfig().getDouble("speedIncreaseRate", 0.01D);

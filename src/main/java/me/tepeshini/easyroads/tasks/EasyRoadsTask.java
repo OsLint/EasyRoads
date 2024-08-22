@@ -63,8 +63,8 @@ public class EasyRoadsTask extends BukkitRunnable {
      */
     @Override
     public void run() {
-        Bukkit.getOnlinePlayers().forEach(this::applyAttribute);
-        affectedEntitiesMap.forEach((w, a) -> a.forEach(this::applyAttribute));
+        Bukkit.getOnlinePlayers().forEach(this::applyAttributeToLivingEntity);
+        affectedEntitiesMap.forEach((w, a) -> a.forEach(this::applyAttributeToEntity));
         if (tickCounter++ % UPDATE_ENTITY_CACHE == 0 && !plugin.getAffectedEntities().isEmpty()) {
             Bukkit.getWorlds().forEach(a -> affectedEntitiesMap.put(a, a.getEntitiesByClasses(
                     plugin.getAffectedEntities().toArray(new Class[0]))));
@@ -72,32 +72,32 @@ public class EasyRoadsTask extends BukkitRunnable {
     }
 
     /**
-     * Applies speed attribute changes to the given entity if it is a valid living entity.
+     * Applies speed attribute changes to the given entity if it is entity valid living entity.
      *
-     * @param a the entity to which the speed attribute will be applied
+     * @param entity the entity to which the speed attribute will be applied
      */
-    private void applyAttribute(Entity a) {
-        if (a.isValid() && a instanceof LivingEntity) {
-            applyAttribute((LivingEntity) a);
+    private void applyAttributeToEntity(Entity entity) {
+        if (entity.isValid() && entity instanceof LivingEntity) {
+            applyAttributeToLivingEntity((LivingEntity) entity);
         }
     }
 
-    /**
+     /**
      * Applies speed attribute changes to the given living entity.
      * The entity's movement speed is adjusted towards the target speed defined by the roads.
      *
-     * @param a the living entity to which the speed attribute will be applied
+     * @param livingEntity the living entity to which the speed attribute will be applied
      */
-    private void applyAttribute(LivingEntity a) {
-        double currentSpeedMod = currentSpeedMap.getOrDefault(a.getUniqueId(), 0D);
-        double targetSpeedMod = getTargetSpeed(a);
+    private void applyAttributeToLivingEntity(LivingEntity livingEntity) {
+        double currentSpeedMod = currentSpeedMap.getOrDefault(livingEntity.getUniqueId(), 0D);
+        double targetSpeedMod = getTargetSpeed(livingEntity);
 
 
         // no need to update attribute if we're at the target already
         if (currentSpeedMod == targetSpeedMod)
             return;
 
-        AttributeInstance attrib = a.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED);
+        AttributeInstance attrib = livingEntity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED);
         attrib.removeModifier(EMPTY_MODIFIER);
 
         if (targetSpeedMod >= currentSpeedMod) {
@@ -108,27 +108,27 @@ public class EasyRoadsTask extends BukkitRunnable {
 
         attrib.addModifier(new AttributeModifier(MODIFIER_UUID, MODIFIER_NAME, currentSpeedMod, Operation.ADD_SCALAR));
 
-        currentSpeedMap.put(a.getUniqueId(), currentSpeedMod);
+        currentSpeedMap.put(livingEntity.getUniqueId(), currentSpeedMod);
     }
 
     /**
      * Retrieves the target speed modifier for the given living entity based on its location.
      * The target speed is determined by the roads in the plugin and is updated periodically.
      *
-     * @param a the living entity whose target speed is to be retrieved
+     * @param livingEntity the living entity whose target speed is to be retrieved
      * @return the target speed modifier for the entity
      */
-    private double getTargetSpeed(LivingEntity a) {
+    private double getTargetSpeed(LivingEntity livingEntity) {
         // distribute updated entities roughly evenly across the ticks
-        if (tickCounter % UPDATE_ON_ROAD_DIVIDER == a.getEntityId() % UPDATE_ON_ROAD_DIVIDER) {
+        if (tickCounter % UPDATE_ON_ROAD_DIVIDER == livingEntity.getEntityId() % UPDATE_ON_ROAD_DIVIDER) {
             double targetSpeedMod = Double.NEGATIVE_INFINITY;
 
             for (Road r : plugin.getRoads())
-                if (r.getSpeedMod() > targetSpeedMod && r.isRoadBlock(a.getLocation().getBlock())) {
-                    targetSpeedMod = r.getSpeedMod();
+                if (r.getSpeedModifier() > targetSpeedMod && r.isRoadBlock(livingEntity.getLocation().getBlock())) {
+                    targetSpeedMod = r.getSpeedModifier();
 
 
-                    if (a instanceof Player p) {
+                    if (livingEntity instanceof Player p) {
                         p.spigot().sendMessage(
                                 ChatMessageType.ACTION_BAR, new TextComponent(plugin.getOnRoadMessage()));
                     }
@@ -138,9 +138,9 @@ public class EasyRoadsTask extends BukkitRunnable {
                 targetSpeedMod = 0.0;
             }
 
-            targetSpeedMap.put(a.getUniqueId(), targetSpeedMod);
+            targetSpeedMap.put(livingEntity.getUniqueId(), targetSpeedMod);
         }
 
-        return targetSpeedMap.getOrDefault(a.getUniqueId(), 0D);
+        return targetSpeedMap.getOrDefault(livingEntity.getUniqueId(), 0D);
     }
 }
