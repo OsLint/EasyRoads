@@ -36,7 +36,7 @@ The plugin uses a configuration file located in `plugins/EasyRoads/config.yml`. 
 - `roads`: Define roads with their respective speed and block types.
 - `affectedEntities`: List of entity types affected by the road speeds.
 
-Example configuration:
+## Example configuration:
 
 ```yaml
 # This is the main configuration file for the plugin
@@ -87,6 +87,10 @@ roads:
       - COBBLESTONE
       - COBBLESTONE
 ```
+Example roads
+![Screenshot 2024-08-22 at 18 49 22](https://github.com/user-attachments/assets/ea7e2e9c-c0a5-4183-b733-d00eb46a796b)
+
+
 ## Commands 📝
 ```/easyroads help:``` Display the help message.
 
