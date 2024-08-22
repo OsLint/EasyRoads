@@ -4,36 +4,36 @@ main: me.tepeshini.easyroads.EasyRoads
 api-version: '1.21'
 authors: [ Tepeshini(ok.dev) ]
 description: Allows players to create predefined roads that will allow them to travel faster
-#commands:
-#  easyroads:
-#    description: Main command for EasyRoads
-#    usage: /easyroads <subcommand>
-#    permission: easyroads
-#    aliases: [ er ]
-#    subcommands:
-#      list:
-#        description: List all roads "craftings"
-#        usage: /easyroads list
-#        permission: easyroads.list
-#      help:
-#        description: Show help
-#        usage: /easyroads help
-#        permission: easyroads.help
-#      reload:
-#        description: Reload plugin
-#        usage: /easyroads reload
-#        permission: easyroads.reload
+commands:
+  easyroads:
+    description: Main command for EasyRoads
+    usage: /easyroads <subcommand>
+    permission: easyroads.admin
+    aliases: [ er ]
+    subcommands:
+      list:
+        description: List all roads "craftings"
+        usage: /easyroads list
+        permission: easyroads.list
+      help:
+        description: Show help
+        usage: /easyroads help
+        permission: easyroads.help
+      reload:
+        description: Reload plugin
+        usage: /easyroads reload
+        permission: easyroads.reload
 
-#permissions:
-#    easyroads:
-#        description: Main permission for EasyRoads
-#        default: true
-#    easyroads.list:
-#        description: Permission to list all roads "craftings"
-#        default: true
-#    easyroads.help:
-#        description: Permission to show help
-#        default: true
-#    easyroads.reload:
-#        description: Permission to reload plugin
-#        default: op
+permissions:
+    easyroads:
+        description: Main permission for EasyRoads
+        default: op
+    easyroads.list:
+        description: Permission to list all roads Blocksets
+        default: true
+    easyroads.help:
+        description: Permission to show help
+        default: op
+    easyroads.reload:
+        description: Permission to reload plugin
+        default: op

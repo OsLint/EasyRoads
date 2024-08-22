@@ -18,9 +18,9 @@ import org.bukkit.attribute.AttributeModifier.Operation;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import java.util.logging.Logger;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import static me.tepeshini.easyroads.utils.DebugLogger.debugLog;
 
 /**
  * A task that periodically updates the movement speed attribute of entities
@@ -44,6 +44,8 @@ public class EasyRoadsTask extends BukkitRunnable {
     private final Map<World, Collection<Entity>> affectedEntitiesMap = new HashMap<>();
     private long tickCounter = 0;
 
+    private final Logger log;
+
     /**
      * Constructs an EasyRoadsTask with the given plugin instance.
      *
@@ -51,6 +53,7 @@ public class EasyRoadsTask extends BukkitRunnable {
      */
     public EasyRoadsTask(EasyRoads plugin) {
         this.plugin = plugin;
+        this.log = plugin.getLogger();
     }
 
     /**
@@ -126,9 +129,9 @@ public class EasyRoadsTask extends BukkitRunnable {
 
 
                     if (a instanceof Player p) {
-                        debugLog().info("Player is on road with speed mod: " + targetSpeedMod);
-                        debugLog().info("Target speed mod: " + targetSpeedMod);
-                        debugLog().info(
+                        log.info("Player is on road with speed mod: " + targetSpeedMod);
+                        log.info("Target speed mod: " + targetSpeedMod);
+                        log.info(
                                 "Current speed mod: " + currentSpeedMap.getOrDefault(a.getUniqueId(), 0D));
                         //display message on action bar
                         p.spigot().sendMessage(

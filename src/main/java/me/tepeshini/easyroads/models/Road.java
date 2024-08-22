@@ -9,8 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
-
-import static me.tepeshini.easyroads.utils.DebugLogger.debugLog;
+import java.util.logging.Logger;
 
 public class Road {
     private final double speed;
@@ -18,7 +17,7 @@ public class Road {
 
     private final List<BlockData> blockData = new ArrayList<>();
 
-    public Road(ConfigurationSection config) {
+    public Road(ConfigurationSection config,Logger log) {
         this.speed = config.getDouble("speed", 0.2D);
 
 
@@ -41,14 +40,14 @@ public class Road {
                 mat = Material.matchMaterial(material, true);
 
                 if (mat != null) {
-                    debugLog().warning("Found legacy material in road. You should update it to the new name to avoid any potential issues.");
-                    debugLog().warning(String.format("Input string: %s -> %s", material, mat.name()));
+                  log.warning("Found legacy material in road. You should update it to the new name to avoid any potential issues.");
+                  log.warning(String.format("Input string: %s -> %s", material, mat.name()));
                 }
             }
 
             if (mat == null) {
-                debugLog().severe("Invalid road block defined, skipping. Make sure to specify a valid material!");
-                debugLog().severe(String.format("Input string: %s", a));
+                log.severe("Invalid road block defined, skipping. Make sure to specify a valid material!");
+                log.severe(String.format("Input string: %s", a));
                 return;
             }
 

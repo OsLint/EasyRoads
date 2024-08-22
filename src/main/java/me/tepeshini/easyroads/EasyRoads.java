@@ -5,16 +5,16 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import me.tepeshini.easyroads.commands.EasyRoadsCommand;
 import me.tepeshini.easyroads.models.Road;
 import me.tepeshini.easyroads.tasks.EasyRoadsTask;
-import me.tepeshini.easyroads.utils.DebugLogger;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import static me.tepeshini.easyroads.utils.DebugLogger.debugLog;
+
 
 public final class EasyRoads extends JavaPlugin {
 
@@ -33,12 +33,9 @@ public final class EasyRoads extends JavaPlugin {
         loadConfig();
 
         //register commands
-        // Objects.requireNonNull(getCommand("roads")).setExecutor(new EasyRoadsCommand(this));
+        getCommand("easyroads").setExecutor(new EasyRoadsCommand(this));
 
-        //init logger
-        Boolean debug = getConfig().getBoolean("debug", false);
-        DebugLogger.init(this, debug);
-        debugLog().warning("Debug mode enabled");
+
 
         //start task
         new EasyRoadsTask(this).runTaskTimer(this, 1L, 1L);
@@ -77,8 +74,8 @@ public final class EasyRoads extends JavaPlugin {
         //load roads
         ConfigurationSection roadSection = getConfig().getConfigurationSection("roads");
         assert roadSection != null;
-        roads = roadSection.getKeys(false).stream().map(key -> new Road(Objects.requireNonNull(
-                roadSection.getConfigurationSection(key)))).collect(Collectors.toSet());
+        roads = roadSection.getKeys(false).stream().map(key -> new Road(
+                roadSection.getConfigurationSection(key),getLogger())).collect(Collectors.toSet());
 
 
         getLogger().info("--------------------");
