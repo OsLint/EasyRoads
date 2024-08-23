@@ -19,7 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  * This class handles the plugin's initialization, configuration loading,
  * and command registration.
  */
-public final class EasyRoads extends JavaPlugin {
+public  class EasyRoads extends JavaPlugin {
 
     private Set<Road> roads;
     private double speedIncreaseRate = 0.01D;
@@ -41,6 +41,8 @@ public final class EasyRoads extends JavaPlugin {
      */
     @Override
     public void onEnable() {
+        Metrics metrics = new Metrics(this, 23160);
+
         //create and load config
         if (!getDataFolder().exists()) {
             saveDefaultConfig();

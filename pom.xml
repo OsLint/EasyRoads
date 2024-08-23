@@ -6,7 +6,7 @@
 
     <groupId>me.Tepeshini</groupId>
     <artifactId>EasyRoads</artifactId>
-    <version>0.0-SNAPSHOT</version>
+    <version>1.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>EasyRoads</name>
